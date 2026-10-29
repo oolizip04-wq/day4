@@ -107,7 +107,7 @@ export const visitors = {
         ${sites.map((s, i) => `<button class="chip on" data-s="${esc(s)}" style="--c:${color(s, i)}"><i></i>${esc(label(s))}</button>`).join('')}
       </div>
 
-      <div class="chart-box" id="chartBox"><div id="chart"></div><div class="tip" id="tip" hidden></div></div>
+      <div class="chart-box" id="chartBox"><div id="chart"></div><div class="chart-tip" id="tip" hidden></div></div>
 
       <h3 class="rank-title">기간 내 관광지별 합계</h3>
       <div id="rank"></div>

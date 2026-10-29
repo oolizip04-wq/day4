@@ -8,6 +8,7 @@ import { cart as cartView } from './views/cart.js'
 import { checkout } from './views/checkout.js'
 import { orders } from './views/orders.js'
 import { visitors } from './views/visitors.js'
+import { map3d } from './views/map3d.js'
 import { home } from './views/home.js'
 import { spots } from './views/spots.js'
 import { explore } from './views/explore.js'
@@ -16,7 +17,7 @@ import { login, signup, reset, updatePw } from './views/authViews.js'
 
 const routes = {
   '/': home, '/spots': spots, '/explore': explore, '/me': me,
-  '/visitors': visitors, '/shop': shop, '/cart': cartView, '/checkout': checkout, '/orders': orders,
+  '/map': map3d, '/visitors': visitors, '/shop': shop, '/cart': cartView, '/checkout': checkout, '/orders': orders,
   '/login': login, '/signup': signup, '/reset': reset, '/update-password': updatePw,
 }
 const viewEl = document.getElementById('view')
@@ -37,7 +38,7 @@ function renderHeader() {
       <a href="/" data-link class="brand"><span class="logo">🌊</span> 제주 이야기</a>
       <button class="burger" aria-label="메뉴" aria-expanded="false">☰</button>
       <nav class="nav">
-        ${link('/', '홈')}${link('/spots', '명소·먹거리·문화')}${link('/explore', '사진 탐색')}${link('/visitors', '관광통계')}${link('/shop', '쇼핑')}${link('/me', '내 찜')}
+        ${link('/', '홈')}${link('/spots', '명소·먹거리·문화')}${link('/map', '3D 지도')}${link('/explore', '사진 탐색')}${link('/visitors', '관광통계')}${link('/shop', '쇼핑')}${link('/me', '내 찜')}
         <a href="/cart" data-link class="cart-link ${path === '/cart' ? 'active' : ''}" aria-label="장바구니">🛒<span class="badge" id="cartBadge" ${cartCount() ? '' : 'hidden'}>${cartCount()}</span></a>
         <span class="nav-auth">
           ${u
@@ -58,6 +59,7 @@ function renderHeader() {
 }
 
 let token = 0
+let activeView = null
 async function render() {
   const path = location.pathname.replace(/\/+$/, '') || '/'
   const view = routes[path] || home
@@ -71,6 +73,8 @@ async function render() {
     return
   }
   const mine = ++token
+  activeView?.destroy?.()   // 이전 화면(예: 3D 지도)의 렌더 루프·GPU 자원 정리
+  activeView = view
   renderHeader()
   window.scrollTo(0, 0)
   document.title = `${view.title ? view.title + ' · ' : ''}제주 이야기`
