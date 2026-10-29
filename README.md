@@ -13,6 +13,7 @@ Supabase로 회원가입/로그인을 하고, 마음에 드는 사진을 **찜**
 ```
 api/pixabay.js        Pixabay 검색 프록시 (서버 전용 키 사용)
 supabase/schema.sql   favorites 테이블 + 보안 정책
+supabase/shop.sql     상품·장바구니·주문 테이블, place_order 함수, 예시 상품
 src/                  화면, 인증, 찜 로직
 .env.example          환경변수 목록
 vercel.json           SPA 라우팅 설정
@@ -36,7 +37,9 @@ vercel.json           SPA 라우팅 설정
 2. **Project Settings → API** 에서 두 값을 복사
    - `Project URL` → `VITE_SUPABASE_URL`
    - `Project API keys → anon public` → `VITE_SUPABASE_ANON_KEY`
-3. **SQL Editor → New query** 에 `supabase/schema.sql` 전체를 붙여넣고 **Run**
+3. **SQL Editor → New query** 에 아래 두 파일을 **차례로** 붙여넣고 각각 **Run**
+   - `supabase/schema.sql` — 찜(favorites)
+   - `supabase/shop.sql` — 쇼핑(상품·장바구니·주문, 예시 상품 12개 포함). 실행 시 "destructive operations" 경고가 뜨면 `drop policy if exists` 때문이니 Run query 를 누르세요.
 4. **Authentication → Providers → Email** 이 켜져 있는지 확인
    - 가입 직후 바로 로그인시키려면 **Confirm email** 을 끄세요 (개발·테스트용). 켜 두면 인증 메일의 링크를 눌러야 가입이 완료됩니다.
 5. **Authentication → URL Configuration**
@@ -89,6 +92,20 @@ git push -u origin main
 - [ ] 회원가입 → (필요 시 메일 인증) → 로그인된다
 - [ ] 사진의 ♡ 를 누르면 **내 찜** 에 담긴다 (안 되면 `schema.sql` 실행 여부 확인)
 - [ ] 로그아웃 후 `/me` 에 접속하면 로그인 화면으로 이동한다
+- [ ] `/shop` 에서 상품이 보이고, 로그인 후 🛒 담기 → 장바구니(수량 변경·삭제) → 주문서 → 주문 내역까지 이어진다
+
+## 쇼핑(장바구니·주문서) 동작
+
+| 화면 | 주소 | 로그인 |
+|---|---|---|
+| 쇼핑 목록 | `/shop` | 불필요 (담기 시 필요) |
+| 장바구니 | `/cart` | 필요 |
+| 주문서 | `/checkout` | 필요 |
+| 주문 내역 | `/orders` | 필요 |
+
+- 상품은 Supabase `products` 테이블에서 관리합니다. 대시보드 Table Editor 에서 상품을 추가·수정·숨김(`active=false`)할 수 있습니다.
+- 주문은 DB 함수 `place_order` 가 장바구니와 상품 가격으로 **서버에서 금액을 계산**하므로 브라우저에서 가격을 조작할 수 없습니다. 3만원 이상 무료배송, 미만 3,000원입니다.
+- 데모입니다. 실제 결제·배송 연동은 없습니다.
 
 ## Pixabay 이용 안내
 

@@ -5,6 +5,8 @@ import { configured } from './supabase.js'
 export const esc = (s) =>
   String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
 
+export const won = (n) => `${Number(n || 0).toLocaleString('ko-KR')}원`
+
 export function toast(msg, type = 'info') {
   const el = document.createElement('div')
   el.className = `toast ${type}`

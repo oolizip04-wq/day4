@@ -1,7 +1,12 @@
 import './style.css'
 import { initAuth, getUser, nickname, onAuth, signOut } from './auth.js'
 import { loadFavorites, resetFavorites } from './favorites.js'
+import { loadCart, resetCart, cartCount, onCart } from './cart.js'
 import { toast, esc } from './ui.js'
+import { shop } from './views/shop.js'
+import { cart as cartView } from './views/cart.js'
+import { checkout } from './views/checkout.js'
+import { orders } from './views/orders.js'
 import { home } from './views/home.js'
 import { spots } from './views/spots.js'
 import { explore } from './views/explore.js'
@@ -10,6 +15,7 @@ import { login, signup, reset, updatePw } from './views/authViews.js'
 
 const routes = {
   '/': home, '/spots': spots, '/explore': explore, '/me': me,
+  '/shop': shop, '/cart': cartView, '/checkout': checkout, '/orders': orders,
   '/login': login, '/signup': signup, '/reset': reset, '/update-password': updatePw,
 }
 const viewEl = document.getElementById('view')
@@ -30,10 +36,11 @@ function renderHeader() {
       <a href="/" data-link class="brand"><span class="logo">🌊</span> 제주 이야기</a>
       <button class="burger" aria-label="메뉴" aria-expanded="false">☰</button>
       <nav class="nav">
-        ${link('/', '홈')}${link('/spots', '명소·먹거리·문화')}${link('/explore', '사진 탐색')}${link('/me', '내 찜')}
+        ${link('/', '홈')}${link('/spots', '명소·먹거리·문화')}${link('/explore', '사진 탐색')}${link('/shop', '쇼핑')}${link('/me', '내 찜')}
+        <a href="/cart" data-link class="cart-link ${path === '/cart' ? 'active' : ''}" aria-label="장바구니">🛒<span class="badge" id="cartBadge" ${cartCount() ? '' : 'hidden'}>${cartCount()}</span></a>
         <span class="nav-auth">
           ${u
-            ? `<span class="hello">${esc(nickname())}님</span><button class="btn small" id="btnLogout">로그아웃</button>`
+            ? `<span class="hello">${esc(nickname())}님</span><a href="/orders" data-link class="small-link">주문내역</a><button class="btn small" id="btnLogout">로그아웃</button>`
             : `${link('/login', '로그인')}<a href="/signup" data-link class="btn small primary">회원가입</a>`}
         </span>
       </nav>
@@ -79,18 +86,32 @@ document.addEventListener('click', (e) => {
 })
 addEventListener('popstate', render)
 
-// 로그인 상태가 바뀌면 찜 목록을 다시 불러오고 화면 갱신
+// 장바구니 개수 배지 갱신
+onCart(() => {
+  const b = document.getElementById('cartBadge')
+  if (!b) return
+  b.textContent = cartCount()
+  b.hidden = !cartCount()
+})
+
+// 로그인 상태가 바뀌면 찜·장바구니를 다시 불러오고 화면 갱신
 let lastUserId = null
 onAuth(async (u, event) => {
   if ((u?.id ?? null) === lastUserId && event !== 'SIGNED_IN') return
   lastUserId = u?.id ?? null
-  if (u) { try { await loadFavorites() } catch { /* 테이블 미생성 등은 무시 */ } } else resetFavorites()
+  if (u) {
+    try { await loadFavorites() } catch { /* 테이블 미생성 등은 무시 */ }
+    try { await loadCart() } catch { /* ignore */ }
+  } else { resetFavorites(); resetCart() }
   if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') render()
 })
 
 ;(async () => {
   await initAuth(() => navigate('/update-password', true))
   lastUserId = getUser()?.id ?? null
-  if (getUser()) { try { await loadFavorites() } catch { /* ignore */ } }
+  if (getUser()) {
+    try { await loadFavorites() } catch { /* ignore */ }
+    try { await loadCart() } catch { /* ignore */ }
+  }
   render()
 })()

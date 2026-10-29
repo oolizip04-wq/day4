@@ -159,6 +159,54 @@ body > .notice, #view > .notice { max-width: 1120px; margin: 14px auto 0; }
 .toast.warn { background: #b35a00; } .toast.error { background: #b3261e; } .toast.out { opacity: 0; }
 @keyframes up { from { transform: translateY(14px); opacity: 0; } }
 
+/* ── 쇼핑 ── */
+.cart-link { position: relative; padding: 8px 12px; border-radius: 10px; font-size: 1.15rem; line-height: 1; }
+.cart-link:hover { background: #eef3f2; text-decoration: none; }
+.cart-link.active { background: #e4f4f9; }
+.badge { position: absolute; top: 0; right: 0; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 99px; background: var(--tangerine); color: #fff; font-size: .72rem; font-weight: 700; display: grid; place-items: center; }
+.badge[hidden] { display: none; }
+.small-link { font-size: .88rem; color: var(--muted); padding: 4px 6px; }
+.product .price-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 12px; }
+.price { font-size: 1.1rem; color: var(--basalt); }
+.cart-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
+.cart-list { display: grid; gap: 12px; }
+.cart-row { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto 100px 32px; gap: 14px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.cart-row .thumb { width: 72px; height: 72px; border-radius: 10px; background: linear-gradient(135deg, #cfe9f1, #e9efe6) center / cover; }
+.cart-row .info { display: grid; gap: 2px; }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.qty button { width: 32px; height: 32px; border: 0; background: #f2f6f5; cursor: pointer; font-size: 1rem; }
+.qty button:hover { background: #e4eeec; }
+.qty span { min-width: 36px; text-align: center; font-weight: 600; }
+.cart-row .line { text-align: right; font-weight: 700; }
+.cart-row .del { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 1rem; }
+.cart-row .del:hover { color: #b3261e; }
+.summary { position: sticky; top: 76px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
+.summary h3 { margin-bottom: 12px; }
+.summary dl { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; margin: 12px 0; }
+.summary dt, .summary dd { margin: 0; }
+.summary dd { text-align: right; font-weight: 600; }
+.summary .sum { font-size: 1.1rem; font-weight: 800; color: var(--ocean-d); padding-top: 10px; border-top: 1px dashed var(--line); }
+.summary .full { width: 100%; margin-top: 8px; }
+.small { font-size: .88rem; } .ok { color: #14663a; }
+.mini { list-style: none; padding: 0; margin: 0 0 10px; display: grid; gap: 6px; font-size: .94rem; }
+.mini li { display: flex; justify-content: space-between; gap: 10px; }
+.card-box { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; margin: 0; }
+.order { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
+.order.new { border-color: var(--ocean); box-shadow: 0 0 0 3px #d5eef6; }
+.order header, .order footer { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
+.order header { margin-bottom: 10px; }
+.order footer { padding-top: 10px; border-top: 1px dashed var(--line); }
+.order .right { text-align: right; }
+@media (max-width: 860px) {
+  .cart-wrap { grid-template-columns: 1fr; }
+  .summary { position: static; }
+  .cart-row { grid-template-columns: 56px minmax(0, 1fr) 32px; }
+  .cart-row .thumb { width: 56px; height: 56px; }
+  .cart-row .qty { grid-column: 2; justify-self: start; }
+  .cart-row .line { grid-column: 2; text-align: left; }
+  .cart-row .del { grid-column: 3; grid-row: 1; }
+}
+
 .footer { margin-top: 70px; padding: 30px 20px 40px; text-align: center; background: var(--basalt); color: #c9d1d6; font-size: .9rem; }
 .footer a { color: #fff; }
 .footer p { margin: 4px 0; }
