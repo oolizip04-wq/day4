@@ -159,6 +159,42 @@ body > .notice, #view > .notice { max-width: 1120px; margin: 14px auto 0; }
 .toast.warn { background: #b35a00; } .toast.error { background: #b3261e; } .toast.out { opacity: 0; }
 @keyframes up { from { transform: translateY(14px); opacity: 0; } }
 
+/* ── 관광 통계 차트 ── */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 22px; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 2px; box-shadow: var(--shadow); }
+.stat b { font-size: 1.45rem; color: var(--basalt); }
+.stat em { font-style: normal; font-size: .88rem; color: var(--muted); }
+.up { color: #14663a; font-weight: 700; } .down { color: #b3261e; font-weight: 700; }
+.viz-controls { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; margin-bottom: 4px; }
+.seg { display: inline-flex; background: #e9efee; border-radius: 12px; padding: 3px; }
+.seg button { font: inherit; font-size: .92rem; border: 0; background: none; padding: 7px 14px; border-radius: 10px; cursor: pointer; color: var(--muted); }
+.seg button.on { background: #fff; color: var(--ink); font-weight: 700; box-shadow: 0 1px 4px rgba(0, 0, 0, .12); }
+.chip i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--c); margin-right: 7px; opacity: .35; }
+.chip.on { background: #fff; color: var(--ink); border-color: var(--c); box-shadow: inset 0 0 0 1px var(--c); }
+.chip.on i { opacity: 1; }
+.chart-box { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 10px 6px; margin-top: 14px; }
+.svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
+.svg .grid { stroke: #e6ecea; stroke-width: 1; }
+.svg .tick { fill: #7a858c; font-size: 12px; }
+.svg .part { fill: #9aa4aa; font-size: 10px; }
+.svg .cross { stroke: #9aa4aa; stroke-dasharray: 4 3; }
+.svg .bar-total { fill: #46525a; font-size: 11px; font-weight: 700; }
+.tip { position: absolute; z-index: 5; pointer-events: none; background: rgba(29, 35, 41, .94); color: #fff; border-radius: 12px; padding: 10px 12px; font-size: .84rem; min-width: 190px; box-shadow: var(--shadow); }
+.tip b { display: block; margin-bottom: 6px; }
+.tip div { display: flex; align-items: center; gap: 6px; padding: 1px 0; }
+.tip div span { margin-left: auto; font-variant-numeric: tabular-nums; }
+.tip i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.rank-title { margin: 26px 0 10px; font-size: 1.1rem; }
+.rank-row { display: grid; grid-template-columns: 170px minmax(0, 1fr) 110px; gap: 12px; align-items: center; padding: 6px 0; font-size: .94rem; }
+.rank-row .meter { height: 12px; background: #e9efee; border-radius: 99px; overflow: hidden; }
+.rank-row .meter i { display: block; height: 100%; border-radius: 99px; }
+.rank-row b { text-align: right; font-variant-numeric: tabular-nums; }
+.src { margin-top: 22px; line-height: 1.6; }
+@media (max-width: 760px) {
+  .stats { grid-template-columns: 1fr; }
+  .rank-row { grid-template-columns: 110px minmax(0, 1fr) 84px; font-size: .86rem; }
+}
+
 /* ── 쇼핑 ── */
 .cart-link { position: relative; padding: 8px 12px; border-radius: 10px; font-size: 1.15rem; line-height: 1; }
 .cart-link:hover { background: #eef3f2; text-decoration: none; }
@@ -211,11 +247,15 @@ body > .notice, #view > .notice { max-width: 1120px; margin: 14px auto 0; }
 .footer a { color: #fff; }
 .footer p { margin: 4px 0; }
 
-@media (max-width: 760px) {
+.nav a, .nav button, .nav .hello, .brand { white-space: nowrap; }
+@media (max-width: 1040px) {
   .burger { display: block; }
   .nav { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; align-items: stretch; background: #fff; padding: 10px 20px 16px; border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
   #header.open .nav { display: flex; }
   .nav-auth { margin: 8px 0 0; padding: 12px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .cart-link { align-self: flex-start; }
+}
+@media (max-width: 760px) {
   .facts { grid-template-columns: 1fr; }
   .masonry { columns: 2 140px; column-gap: 10px; }
   .photo figcaption { opacity: 1; }

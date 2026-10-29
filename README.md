@@ -12,6 +12,7 @@ Supabase로 회원가입/로그인을 하고, 마음에 드는 사진을 **찜**
 
 ```
 api/pixabay.js        Pixabay 검색 프록시 (서버 전용 키 사용)
+api/visitors.js       서귀포 직영관광지 관람객 공공데이터 → 월별 시계열로 정리
 supabase/schema.sql   favorites 테이블 + 보안 정책
 supabase/shop.sql     상품·장바구니·주문 테이블, place_order 함수, 예시 상품
 src/                  화면, 인증, 찜 로직
@@ -26,6 +27,7 @@ vercel.json           SPA 라우팅 설정
 | `VITE_SUPABASE_URL` | 브라우저 | Supabase 프로젝트 주소 | 공개 가능 |
 | `VITE_SUPABASE_ANON_KEY` | 브라우저 | Supabase anon(public) 키 | 공개 가능 (RLS로 보호) |
 | `PIXABAY_API_KEY` | 서버 전용 | Pixabay API 키 | **비공개** (`VITE_` 금지) |
+| `DATA_GO_KR_KEY` | 서버 전용 | 공공데이터포털 인증키 (관람객 통계) | **비공개** (`VITE_` 금지) |
 
 > `service_role` 키는 절대 사용·등록하지 마세요.
 
@@ -51,6 +53,13 @@ vercel.json           SPA 라우팅 설정
 1. https://pixabay.com 회원가입/로그인
 2. https://pixabay.com/api/docs/ 에 접속하면 페이지 안에 **Your API key** 가 표시됩니다 → `PIXABAY_API_KEY`
 
+### 2-1. 공공데이터포털 인증키 받기 (관광통계 `/visitors` 화면용)
+
+1. https://www.data.go.kr 로그인 → **제주특별자치도 서귀포시_직영관광지 관람객수 추이** 검색 → **활용신청**
+2. 승인되면 **마이페이지 → 데이터 활용 → 활용신청 현황** 에서 해당 API를 열고 **일반 인증키**를 복사 → `DATA_GO_KR_KEY`
+3. 이 키도 서버 함수(`api/visitors.js`)에서만 사용합니다. 화면 코드에는 넣지 마세요.
+4. 호출 횟수 제한이 있어 응답을 6시간 캐시합니다.
+
 ### 3. 로컬 실행
 
 ```bash
@@ -73,10 +82,11 @@ git push -u origin main
 
 1. https://vercel.com → **Add New → Project** → GitHub 저장소 Import
 2. Framework Preset: **Vite** (자동 인식), Build `npm run build`, Output `dist`
-3. **Environment Variables** 에 3개 등록 (Production / Preview / Development 모두 체크)
+3. **Environment Variables** 에 4개 등록 (Production / Preview / Development 모두 체크)
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
    - `PIXABAY_API_KEY`
+   - `DATA_GO_KR_KEY`
 4. **Deploy**
 
 > 환경변수를 추가·수정한 뒤에는 **Deployments → Redeploy** 해야 반영됩니다.

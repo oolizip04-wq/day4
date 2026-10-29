@@ -7,6 +7,7 @@ import { shop } from './views/shop.js'
 import { cart as cartView } from './views/cart.js'
 import { checkout } from './views/checkout.js'
 import { orders } from './views/orders.js'
+import { visitors } from './views/visitors.js'
 import { home } from './views/home.js'
 import { spots } from './views/spots.js'
 import { explore } from './views/explore.js'
@@ -15,7 +16,7 @@ import { login, signup, reset, updatePw } from './views/authViews.js'
 
 const routes = {
   '/': home, '/spots': spots, '/explore': explore, '/me': me,
-  '/shop': shop, '/cart': cartView, '/checkout': checkout, '/orders': orders,
+  '/visitors': visitors, '/shop': shop, '/cart': cartView, '/checkout': checkout, '/orders': orders,
   '/login': login, '/signup': signup, '/reset': reset, '/update-password': updatePw,
 }
 const viewEl = document.getElementById('view')
@@ -36,7 +37,7 @@ function renderHeader() {
       <a href="/" data-link class="brand"><span class="logo">🌊</span> 제주 이야기</a>
       <button class="burger" aria-label="메뉴" aria-expanded="false">☰</button>
       <nav class="nav">
-        ${link('/', '홈')}${link('/spots', '명소·먹거리·문화')}${link('/explore', '사진 탐색')}${link('/shop', '쇼핑')}${link('/me', '내 찜')}
+        ${link('/', '홈')}${link('/spots', '명소·먹거리·문화')}${link('/explore', '사진 탐색')}${link('/visitors', '관광통계')}${link('/shop', '쇼핑')}${link('/me', '내 찜')}
         <a href="/cart" data-link class="cart-link ${path === '/cart' ? 'active' : ''}" aria-label="장바구니">🛒<span class="badge" id="cartBadge" ${cartCount() ? '' : 'hidden'}>${cartCount()}</span></a>
         <span class="nav-auth">
           ${u
